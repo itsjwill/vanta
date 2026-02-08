@@ -1,5 +1,5 @@
 import { Composition } from "remotion";
-import { PrismShowcase } from "./scenes/PrismShowcase";
+import { VantaShowcase } from "./scenes/VantaShowcase";
 import { ParticleScene } from "./scenes/ParticleScene";
 import { KineticText } from "./scenes/KineticText";
 import { DataVizScene } from "./scenes/DataVizScene";
@@ -10,8 +10,8 @@ export const RemotionRoot: React.FC = () => {
     <>
       {/* Main showcase — the hero video */}
       <Composition
-        id="PrismShowcase"
-        component={PrismShowcase}
+        id="VantaShowcase"
+        component={VantaShowcase}
         durationInFrames={450}
         fps={30}
         width={1920}
@@ -34,7 +34,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{ text: "PRISM STUDIO", subtitle: "Video creation, reimagined." }}
+        defaultProps={{ text: "CREATE VIDEOS", subtitle: "with code, AI, and imagination" }}
       />
       <Composition
         id="DataViz"

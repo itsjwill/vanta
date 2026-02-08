@@ -1,5 +1,5 @@
 /**
- * PRISM STUDIO — AI Avatar Integration
+ * VANTA — AI Avatar Integration
  *
  * Integrates SadTalker and Wav2Lip for turning a single photo
  * into a talking-head video with perfect lip sync.

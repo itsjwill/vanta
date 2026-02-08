@@ -1,5 +1,5 @@
 /**
- * PRISM STUDIO — Background Removal Integration
+ * VANTA — Background Removal Integration
  *
  * Client-side background removal using Transformers.js.
  * Zero server cost — runs entirely in the browser.

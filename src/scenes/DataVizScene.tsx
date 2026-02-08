@@ -1,165 +1,77 @@
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, spring } from "remotion";
+import { AbsoluteFill, useCurrentFrame, interpolate } from "remotion";
 import React from "react";
 
-const BAR_DATA = [
-  { label: "Voice Clone", value: 92, color: "#6366f1" },
-  { label: "AI Avatar", value: 87, color: "#8b5cf6" },
-  { label: "Auto-Caption", value: 95, color: "#a855f7" },
-  { label: "Particles", value: 78, color: "#c084fc" },
-  { label: "Data Viz", value: 84, color: "#d946ef" },
-  { label: "Waveform", value: 90, color: "#ec4899" },
+const DATA = [
+  { label: "voice cloning", value: 92 },
+  { label: "ai avatars", value: 87 },
+  { label: "auto captions", value: 95 },
+  { label: "video generation", value: 78 },
+  { label: "background removal", value: 91 },
+  { label: "ai soundtrack", value: 83 },
 ];
 
 export const DataVizScene: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
 
-  const titleOpacity = interpolate(frame, [0, 15], [0, 1], {
+  const labelOpacity = interpolate(frame, [0, 15], [0, 0.3], {
     extrapolateRight: "clamp",
   });
 
+  const counterVal = Math.min(40, Math.round(interpolate(frame, [20, 55], [0, 40], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  })));
+
   return (
-    <AbsoluteFill
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "transparent",
-        padding: 80,
-      }}
-    >
-      {/* Title */}
+    <AbsoluteFill style={{ paddingLeft: 200, paddingRight: 200, justifyContent: "center" }}>
       <div
         style={{
-          position: "absolute",
-          top: 100,
-          opacity: titleOpacity,
-          fontSize: 48,
-          fontWeight: 700,
-          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-          color: "white",
-          textAlign: "center",
-          width: "100%",
+          fontSize: 12,
+          fontFamily: '"Courier New", Courier, monospace',
+          color: `rgba(255,255,255,${labelOpacity})`,
+          letterSpacing: "0.35em",
+          textTransform: "uppercase",
+          marginBottom: 40,
         }}
       >
-        Integrated AI Capabilities
+        integration readiness
       </div>
 
-      {/* Bar chart */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-end",
-          gap: 40,
-          height: 500,
-          marginTop: 60,
-        }}
-      >
-        {BAR_DATA.map((bar, i) => {
-          const delay = i * 5;
-          const barSpring = spring({
-            frame: frame - delay - 10,
-            fps,
-            config: { damping: 15, stiffness: 120, mass: 0.8 },
-          });
+      {DATA.map((item, i) => {
+        const delay = 8 + i * 5;
+        const barWidth = interpolate(frame, [delay, delay + 22], [0, item.value], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+        });
+        const rowOpacity = interpolate(frame, [delay, delay + 8], [0, 1], {
+          extrapolateLeft: "clamp",
+          extrapolateRight: "clamp",
+        });
 
-          const barHeight = barSpring * bar.value * 4;
-
-          // Counter animation
-          const displayValue = Math.round(barSpring * bar.value);
-
-          return (
-            <div
-              key={bar.label}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 12,
-              }}
-            >
-              {/* Value label */}
-              <span
-                style={{
-                  fontSize: 28,
-                  fontWeight: 700,
-                  fontFamily: "monospace",
-                  color: bar.color,
-                  opacity: barSpring,
-                }}
-              >
-                {displayValue}%
-              </span>
-
-              {/* Bar */}
-              <div
-                style={{
-                  width: 80,
-                  height: barHeight,
-                  borderRadius: 8,
-                  background: `linear-gradient(180deg, ${bar.color}, ${bar.color}88)`,
-                  boxShadow: `0 0 30px ${bar.color}44`,
-                  transition: "height 0.1s ease-out",
-                }}
-              />
-
-              {/* Label */}
-              <span
-                style={{
-                  fontSize: 16,
-                  fontWeight: 500,
-                  color: "rgba(255,255,255,0.7)",
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  textAlign: "center",
-                  width: 100,
-                  opacity: barSpring,
-                }}
-              >
-                {bar.label}
-              </span>
+        return (
+          <div key={item.label} style={{ display: "flex", alignItems: "center", marginBottom: 18, opacity: rowOpacity }}>
+            <div style={{ width: 200, fontSize: 14, fontFamily: '"Courier New", Courier, monospace', color: "rgba(255,255,255,0.5)", letterSpacing: "0.05em", textAlign: "right", paddingRight: 24 }}>
+              {item.label}
             </div>
-          );
-        })}
-      </div>
+            <div style={{ flex: 1, height: 20, background: "rgba(255,255,255,0.03)", borderRadius: 2, overflow: "hidden" }}>
+              <div style={{ height: "100%", width: `${barWidth}%`, background: "linear-gradient(90deg, rgba(255,180,100,0.7), rgba(255,140,60,0.5))", borderRadius: 2 }} />
+            </div>
+            <div style={{ width: 60, textAlign: "right", fontSize: 14, fontFamily: '"Courier New", Courier, monospace', color: "rgba(255,180,100,0.7)" }}>
+              {Math.round(barWidth)}%
+            </div>
+          </div>
+        );
+      })}
 
-      {/* Animated stat line */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 120,
-          display: "flex",
-          gap: 60,
-          opacity: interpolate(frame, [60, 75], [0, 1], {
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-          }),
-        }}
-      >
+      <div style={{ display: "flex", gap: 80, marginTop: 50, opacity: interpolate(frame, [55, 70], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }}>
         {[
-          { label: "Open Source Repos", value: "40+" },
-          { label: "Combined Stars", value: "250K+" },
-          { label: "Cost to You", value: "$0" },
+          { value: `${counterVal}+`, label: "open source repos" },
+          { value: "250K+", label: "combined github stars" },
+          { value: "$0", label: "total cost" },
         ].map((stat) => (
-          <div key={stat.label} style={{ textAlign: "center" }}>
-            <div
-              style={{
-                fontSize: 42,
-                fontWeight: 800,
-                color: "white",
-                fontFamily: "monospace",
-              }}
-            >
-              {stat.value}
-            </div>
-            <div
-              style={{
-                fontSize: 16,
-                color: "rgba(255,255,255,0.5)",
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                marginTop: 4,
-              }}
-            >
-              {stat.label}
-            </div>
+          <div key={stat.label}>
+            <div style={{ fontSize: 32, fontWeight: 200, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', color: "rgba(255,255,255,0.85)" }}>{stat.value}</div>
+            <div style={{ fontSize: 11, fontFamily: '"Courier New", Courier, monospace', color: "rgba(255,255,255,0.3)", letterSpacing: "0.15em", marginTop: 4 }}>{stat.label}</div>
           </div>
         ))}
       </div>

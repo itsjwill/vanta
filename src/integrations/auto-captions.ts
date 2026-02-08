@@ -1,5 +1,5 @@
 /**
- * PRISM STUDIO — Auto-Captions Integration
+ * VANTA — Auto-Captions Integration
  *
  * Whisper-powered transcription with word-level timestamps,
  * rendered as animated captions in Remotion.

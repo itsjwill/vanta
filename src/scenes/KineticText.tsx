@@ -1,4 +1,4 @@
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, spring } from "remotion";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 import React from "react";
 
 interface KineticTextProps {
@@ -6,107 +6,102 @@ interface KineticTextProps {
   subtitle?: string;
 }
 
+/**
+ * Typography scene — left-aligned, mixed weights, wipe reveals.
+ * No bouncing springs. Clean mask animations with offset timing.
+ */
 export const KineticText: React.FC<KineticTextProps> = ({
-  text = "PRISM STUDIO",
-  subtitle = "Video creation, reimagined.",
+  text = "CREATE VIDEOS",
+  subtitle = "with code, AI, and imagination",
 }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
 
-  const letters = text.split("");
+  const words = text.split(" ");
 
   return (
     <AbsoluteFill
       style={{
         justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "transparent",
+        paddingLeft: 200,
+        paddingRight: 200,
       }}
     >
-      {/* Main text — each letter animates in with spring */}
       <div
         style={{
-          display: "flex",
-          gap: 4,
-          perspective: "1000px",
+          fontSize: 12,
+          fontFamily: '"Courier New", Courier, monospace',
+          color: `rgba(255,255,255,${interpolate(frame, [5, 18], [0, 0.35], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          })})`,
+          letterSpacing: "0.35em",
+          textTransform: "uppercase",
+          marginBottom: 16,
         }}
       >
-        {letters.map((letter, i) => {
-          const delay = i * 2;
+        what you can build
+      </div>
 
-          const y = spring({
-            frame: frame - delay,
-            fps,
-            config: { damping: 12, stiffness: 200, mass: 0.5 },
-          });
-
-          const rotateX = interpolate(y, [0, 1], [90, 0]);
-          const opacity = interpolate(y, [0, 0.3], [0, 1], {
+      <div style={{ display: "flex", gap: 24 }}>
+        {words.map((word, i) => {
+          const delay = 10 + i * 8;
+          const reveal = interpolate(frame, [delay, delay + 14], [0, 100], {
+            extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
           });
 
-          // Color shift across the word
-          const hue = interpolate(i, [0, letters.length - 1], [200, 280]);
-
           return (
-            <span
-              key={i}
-              style={{
-                display: "inline-block",
-                fontSize: 120,
-                fontWeight: 900,
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace',
-                color: `hsl(${hue}, 80%, 70%)`,
-                opacity,
-                transform: `rotateX(${rotateX}deg)`,
-                textShadow: `0 0 40px hsla(${hue}, 80%, 60%, 0.5)`,
-                letterSpacing: letter === " " ? "0.3em" : "0.05em",
-                minWidth: letter === " " ? "0.4em" : undefined,
-              }}
-            >
-              {letter}
-            </span>
+            <div key={i} style={{ overflow: "hidden" }}>
+              <span
+                style={{
+                  display: "inline-block",
+                  fontSize: 96,
+                  fontWeight: i === 0 ? 100 : 700,
+                  fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                  color: "rgba(255,255,255,0.92)",
+                  letterSpacing: "-0.02em",
+                  clipPath: `inset(0 ${100 - reveal}% 0 0)`,
+                }}
+              >
+                {word}
+              </span>
+            </div>
           );
         })}
       </div>
 
-      {/* Subtitle fades in after main text */}
       <div
         style={{
-          marginTop: 30,
-          opacity: interpolate(frame, [40, 55], [0, 1], {
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-          }),
-          transform: `translateY(${interpolate(frame, [40, 55], [20, 0], {
+          marginTop: 20,
+          transform: `translateY(${interpolate(frame, [35, 52], [14, 0], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
           })}px)`,
+          opacity: interpolate(frame, [35, 52], [0, 0.45], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          }),
         }}
       >
         <span
           style={{
-            fontSize: 36,
+            fontSize: 22,
             fontWeight: 300,
-            fontFamily:
-              '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-            color: "rgba(255, 255, 255, 0.7)",
-            letterSpacing: "0.15em",
+            fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+            color: "rgba(255,255,255,0.45)",
+            letterSpacing: "0.06em",
           }}
         >
           {subtitle}
         </span>
       </div>
 
-      {/* Animated underline */}
       <div
         style={{
-          marginTop: 20,
-          height: 3,
-          borderRadius: 2,
-          background: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899)",
-          width: interpolate(frame, [50, 75], [0, 600], {
+          marginTop: 28,
+          height: 1,
+          background: "rgba(255,180,100,0.4)",
+          width: interpolate(frame, [45, 70], [0, 180], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
           }),

@@ -1,12 +1,12 @@
 /**
- * PRISM STUDIO — Voice Cloning Integration
+ * VANTA — Voice Cloning Integration
  *
  * Integrates GPT-SoVITS (54K+ stars) and OpenVoice (35K+ stars)
  * for instant voice cloning from 60 seconds of audio.
  *
  * Usage:
  *   const voice = await cloneVoice("./sample.wav");
- *   const audio = await voice.speak("Hello from Prism Studio");
+ *   const audio = await voice.speak("Hello from Vanta");
  *   // Use audio URL in Remotion's <Audio> component
  *
  * Setup:

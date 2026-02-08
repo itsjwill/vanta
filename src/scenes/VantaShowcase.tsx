@@ -3,14 +3,14 @@ import { ParticleScene } from "./ParticleScene";
 import { KineticText } from "./KineticText";
 import { DataVizScene } from "./DataVizScene";
 import { WaveformScene } from "./WaveformScene";
-import { PrismLogo } from "../components/PrismLogo";
+import { VantaLogo } from "../components/VantaLogo";
 import { FeatureCards } from "../components/FeatureCards";
 import { GradientBackground } from "../components/GradientBackground";
 
 /**
- * PRISM STUDIO — Hero Showcase Video
+ * VANTA — Hero Showcase Video
  *
- * 15-second cinematic demo showing what Prism can do.
+ * 15-second cinematic demo.
  * Each scene transitions with a smooth wipe/fade.
  *
  * Timeline (at 30fps, 450 frames = 15 seconds):
@@ -20,7 +20,7 @@ import { GradientBackground } from "../components/GradientBackground";
  *   270-360 (9-12s)  — Audio waveform
  *   360-450 (12-15s) — Feature cards + CTA
  */
-export const PrismShowcase: React.FC = () => {
+export const VantaShowcase: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -38,7 +38,7 @@ export const PrismShowcase: React.FC = () => {
             }),
           }}
         >
-          <PrismLogo />
+          <VantaLogo />
           <ParticleScene />
         </AbsoluteFill>
       </Sequence>

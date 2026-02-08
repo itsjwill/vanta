@@ -1,12 +1,12 @@
 {
-  "name": "prism-studio",
-  "version": "1.0.0",
-  "description": "The AI-Powered Programmatic Video Engine — Remotion on steroids. Voice cloning, AI avatars, auto-captions, generative effects, and a visual editor. All open source.",
+  "name": "vanta",
+  "version": "2.0.0",
+  "description": "Open source video engine. Voice cloning, AI avatars, auto-captions, generative effects, visual editor. 40+ repos, one render pipeline. $0.",
   "scripts": {
     "start": "npx remotion studio",
-    "build": "npx remotion render src/index.ts PrismShowcase out/prism-showcase.mp4",
-    "render": "npx remotion render src/index.ts PrismShowcase out/prism-showcase.mp4",
-    "render:gif": "npx remotion render src/index.ts PrismShowcase out/prism-showcase.gif --image-format png",
+    "build": "npx remotion render src/index.ts VantaShowcase out/vanta-showcase.mp4",
+    "render": "npx remotion render src/index.ts VantaShowcase out/vanta-showcase.mp4",
+    "render:gif": "npx remotion render src/index.ts VantaShowcase out/vanta-showcase.gif --image-format png",
     "preview": "npx remotion preview src/index.ts",
     "upgrade": "npx remotion upgrade"
   },
@@ -37,12 +37,12 @@
     "voice-cloning",
     "ai-avatars",
     "video-editor",
-    "prism-studio"
+    "vanta"
   ],
   "author": "itsjwill",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/itsjwill/prism-studio"
+    "url": "https://github.com/itsjwill/vanta"
   }
 }

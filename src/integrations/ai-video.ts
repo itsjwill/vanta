@@ -1,5 +1,5 @@
 /**
- * PRISM STUDIO — AI Video Generation Integration
+ * VANTA — AI Video Generation Integration
  *
  * Text-to-video and image-to-video generation using open-source models.
  * Generate B-roll, backgrounds, and scene footage from text prompts.

@@ -1,5 +1,5 @@
 /**
- * PRISM STUDIO — AI Music Generation Integration
+ * VANTA — AI Music Generation Integration
  *
  * Generate custom soundtracks on demand using open-source models.
  * Free, local, unlimited — no Suno subscription needed.
