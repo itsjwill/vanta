@@ -1,0 +1,48 @@
+{
+  "name": "prism-studio",
+  "version": "1.0.0",
+  "description": "The AI-Powered Programmatic Video Engine — Remotion on steroids. Voice cloning, AI avatars, auto-captions, generative effects, and a visual editor. All open source.",
+  "scripts": {
+    "start": "npx remotion studio",
+    "build": "npx remotion render src/index.ts PrismShowcase out/prism-showcase.mp4",
+    "render": "npx remotion render src/index.ts PrismShowcase out/prism-showcase.mp4",
+    "render:gif": "npx remotion render src/index.ts PrismShowcase out/prism-showcase.gif --image-format png",
+    "preview": "npx remotion preview src/index.ts",
+    "upgrade": "npx remotion upgrade"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/player": "^4.0.0",
+    "@remotion/transitions": "^4.0.0",
+    "@remotion/shapes": "^4.0.0",
+    "@remotion/noise": "^4.0.0",
+    "@remotion/motion-blur": "^4.0.0",
+    "remotion": "^4.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@remotion/bundler": "^4.0.0",
+    "@types/react": "^18.3.0",
+    "typescript": "^5.5.0",
+    "prettier": "^3.0.0"
+  },
+  "keywords": [
+    "remotion",
+    "video",
+    "programmatic-video",
+    "ai-video",
+    "react",
+    "motion-graphics",
+    "voice-cloning",
+    "ai-avatars",
+    "video-editor",
+    "prism-studio"
+  ],
+  "author": "itsjwill",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itsjwill/prism-studio"
+  }
+}

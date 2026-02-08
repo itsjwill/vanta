@@ -1,0 +1,9 @@
+node_modules/
+dist/
+out/
+.DS_Store
+*.mp4
+*.webm
+*.gif
+.env
+.env.local
