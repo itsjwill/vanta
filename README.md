@@ -1,8 +1,8 @@
 # VANTA — Open Source AI Video Engine
 
-### Free alternative to Synthesia, Runway ML, Descript, HeyGen, and ElevenLabs
+### Free alternative to Synthesia, Runway ML, Descript, HeyGen, ElevenLabs, and the Remotion Pro Store
 
-> Voice cloning + AI avatars + auto-captions + AI video generation + AI music + background removal + visual editor. 40+ open source repos, one render pipeline. $0.
+> Voice cloning + AI avatars + animated captions + AI video + AI music + background removal + visual editor + timeline + transitions + motion graphics. 40+ open source repos, one render pipeline. $0.
 
 [![Join The Agentic Advantage](https://img.shields.io/badge/THE_AGENTIC_ADVANTAGE-000000?style=for-the-badge&logoColor=white)](https://www.skool.com/ai-elite-9507/about?ref=67521860944147018da6145e3db6e51c)
 [![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
@@ -10,7 +10,9 @@
 
 ---
 
-Vanta is a programmatic video engine built on [Remotion](https://github.com/remotion-dev/remotion) that combines 40+ open source repositories into a single video creation pipeline. Voice cloning (GPT-SoVITS), AI talking-head avatars (SadTalker), word-level auto-captions (Whisper), text-to-video generation (Open-Sora), AI music (ACE-Step), client-side background removal, and a drag-and-drop visual editor — all running locally.
+Vanta is a programmatic video engine built on [Remotion](https://github.com/remotion-dev/remotion) that combines 40+ open source repositories into a single video creation pipeline. Voice cloning (GPT-SoVITS), AI talking-head avatars (SadTalker), animated captions (Whisper + styled renderers), text-to-video generation (Open-Sora), AI music (ACE-Step), client-side background removal, drag-and-drop visual editor, video timeline, 100+ GPU-accelerated transitions, and motion graphics — all running locally.
+
+It also replaces everything in the [Remotion Pro Store](https://www.remotion.pro/store) — Editor ($600), Animated Captions ($100), Timeline ($300), Cube Transition ($10), Colors & Shapes ($20), Watercolor Map ($50) — **$1,080 in paid features, free.**
 
 No API keys. No subscriptions. No per-video charges. You own the entire stack.
 
@@ -208,16 +210,158 @@ const result = await removeBackground("./presenter-photo.jpg");
 
 ---
 
-### Visual Editor — react-video-editor
+### Video Editor — DesignCombo + Twick
 
-**What it does:** A drag-and-drop CapCut-style video editor built on Remotion. Non-coders can edit timelines, add clips, trim, and arrange scenes visually. Developers can extend it with custom components.
+**What it does:** A full CapCut/Canva-style drag-and-drop video editor built on Remotion. Timeline, layers, effects, font picker, asset uploads — the complete editing experience. Non-coders get a visual interface. Developers get 80+ feature flags to customize everything.
 
-**How it works:** react-video-editor (1.3K+ stars) provides a timeline UI, property panels, and a preview player — all running on top of Remotion's rendering engine. The editor outputs the same Remotion composition format that the rest of Vanta uses, so anything created in the visual editor can be rendered programmatically, customized with code, or batch-processed.
+**How it works:** DesignCombo's react-video-editor (1.4K+ stars) is built ON TOP of Remotion's rendering engine. Every edit in the visual UI maps to Remotion compositions under the hood. The editor serializes your timeline into JSON that Remotion renders to MP4. This means anything created visually can also be generated programmatically, batch-processed from a CSV, or extended with custom React components.
 
-This is the bridge between "code-first" and "no-code" video creation. Developers build templates and integrations in code. Clients and non-technical users edit them in the visual editor.
+Twick takes an alternative approach — it's an AI-powered video editor SDK that uses Canvas API rendering with built-in AI captions and serverless MP4 export. If you don't need the full Remotion ecosystem, Twick gives you a standalone editor with less configuration.
+
+**How it connects to Vanta:** The `video-editor.ts` integration provides a project format that bridges the editor UI and Remotion's renderer. Create a project in the editor, export it, and render it — or build projects programmatically with `createEditor()` and feed them into the same pipeline.
+
+```typescript
+import { createEditor, projectToRemotionProps } from "./integrations/video-editor";
+
+const editor = createEditor({ width: 1920, height: 1080, fps: 30 });
+// Add tracks programmatically or via the visual editor
+const props = projectToRemotionProps(editor);
+// Feed props into Remotion <Composition> for rendering
+```
+
+**What it replaces:** Remotion Pro Editor Starter ($600), CapCut Pro ($7.99/mo), Canva Pro video editor ($13/mo)
 
 **Repos:**
-- [react-video-editor](https://github.com/designcombo/react-video-editor) — 1,300+ stars
+- [react-video-editor](https://github.com/designcombo/react-video-editor) — 1,400+ stars, built on Remotion
+- [twick](https://github.com/ncounterspecialist/twick) — AI video editor SDK with Canvas timeline
+
+---
+
+### Animated Captions — Styled Caption Rendering
+
+**What it does:** TikTok-style word-by-word highlights, karaoke scrolls, pop-in effects, typewriter reveals. This is the visual presentation layer on top of the Whisper transcription from `auto-captions.ts`. The part Remotion Pro charges $100 for.
+
+**How it works:** Remotion-subtitles takes your SRT/word timestamps and renders them as animated React components with pre-built caption templates. Each word is a positioned element with frame-accurate timing powered by Remotion's `interpolate()`. The active word gets scale, color, and glow effects while surrounding words dim — the exact effect you see on TikTok, Instagram Reels, and YouTube Shorts.
+
+Vidstack Captions (~5KB) handles format parsing — VTT, SRT, SSA — if you need to work with existing subtitle files. Vista automates the full pipeline from audio to animated captions using AssemblyAI + ffmpeg-wasm.
+
+**How it connects to Vanta:** The `animated-captions.ts` integration takes word timestamps from `auto-captions.ts` and provides style presets (TikTok, YouTube, Reels, Karaoke) plus helper functions for determining which word is active, which words are visible, and what CSS styles to apply at each frame.
+
+```typescript
+import { transcribe } from "./integrations/auto-captions";
+import { getActiveWordIndex, CAPTION_PRESETS } from "./integrations/animated-captions";
+
+const captions = await transcribe("./audio.wav");
+const currentTime = frame / fps;
+const activeWord = getActiveWordIndex(captions.segments[0].words, currentTime);
+const style = CAPTION_PRESETS.tiktok; // or youtube, reels, karaoke
+```
+
+**What it replaces:** Remotion Pro Animated Captions ($100), Captions app ($10/mo), CapCut auto-captions
+
+**Repos:**
+- [remotion-subtitles](https://github.com/ahgsql/remotion-subtitles) — Animated subtitles for Remotion
+- [vista](https://github.com/zernonia/vista) — Auto-generate animated subtitles
+- [captions](https://github.com/vidstack/captions) — 130+ stars, lightweight parser/renderer
+
+---
+
+### Timeline — React Timeline Editor
+
+**What it does:** A video editing timeline component with drag-and-drop tracks, clip trimming, split/join, keyframe editing, and playhead scrubbing. Syncs with Remotion's player for real-time preview.
+
+**How it works:** react-timeline-editor (661 stars) provides a multi-track timeline where each track holds clips (video, audio, image, text). Clips can be dragged to reposition, edges dragged to trim, and the playhead scrubbed to any point. Keyframe diamonds on clips control property animation (opacity, scale, position) over time. The timeline data exports as JSON that maps directly to Remotion `<Sequence>` components.
+
+**How it connects to Vanta:** The `timeline.ts` integration provides a full timeline data model — create timelines, add/remove/split clips, add keyframes, and convert the whole thing to Remotion-compatible sequence data with `toRemotionSequences()`.
+
+```typescript
+import { createTimeline, addClip, toRemotionSequences } from "./integrations/timeline";
+
+let timeline = createTimeline({ fps: 30, durationInFrames: 300 });
+timeline = addClip(timeline, {
+  trackIndex: 0, type: "video", src: "clip.mp4",
+  startFrame: 0, endFrame: 150,
+});
+const sequences = toRemotionSequences(timeline);
+// Each sequence maps to a Remotion <Sequence> component
+```
+
+**What it replaces:** Remotion Pro Timeline ($300)
+
+**Repos:**
+- [react-timeline-editor](https://github.com/xzdarcy/react-timeline-editor) — 661 stars, drag-and-drop
+- [timeline-editor-react](https://github.com/kevintech/timeline-editor-react) — Lightweight (~13KB)
+
+---
+
+### Transitions — GL Transitions (100+ Effects)
+
+**What it does:** GPU-accelerated video transitions — crossfade, cube rotate, pixelate, morph, kaleidoscope, glitch, film burn, and 100+ more. Each transition is a WebGL shader that runs on the GPU for instant rendering.
+
+**How it works:** GL Transitions (1.2K+ stars) is an open collection of GLSL fragment shaders. Each shader takes two textures (outgoing scene, incoming scene) and a progress value (0→1), then blends them using the transition algorithm. A cube transition rotates the outgoing scene away like a 3D cube face revealing the incoming scene. A pixelate transition breaks the image into blocks that reform as the new scene. All of them run at 60fps because they execute on the GPU, not the CPU.
+
+The BBC's VideoContext (1.3K+ stars) provides a higher-level composition API with shader-based transitions built in. Curtains.js (4.5K+ stars) converts DOM elements into WebGL textured planes for 3D transition effects.
+
+**How it connects to Vanta:** The `transitions.ts` integration provides a `applyTransition()` function that returns configuration for Remotion's `<TransitionSeries>`. Choose from 30+ named transitions or pass custom GLSL shader code.
+
+```typescript
+import { applyTransition, listTransitions } from "./integrations/transitions";
+
+// Use a named transition
+const cube = applyTransition("cube", { duration: 30 });
+const glitch = applyTransition("glitch", { duration: 15, intensity: 0.8 });
+
+// See all available transitions by category
+const all = listTransitions();
+// { geometric: [...], "3d": [...], creative: [...], film: [...], ... }
+```
+
+**What it replaces:** Remotion Pro Cube Transition ($10) — but you get 100+ transitions instead of just one
+
+**Repos:**
+- [gl-transitions](https://github.com/gl-transitions/gl-transitions) — 1,200+ stars, 100+ WebGL shaders
+- [VideoContext](https://github.com/bbc/VideoContext) — 1,300+ stars, BBC video composition
+- [curtains.js](https://github.com/martinlaxenaire/curtainsjs) — 4,500+ stars, WebGL DOM transitions
+
+---
+
+### Motion Graphics — Shapes, Animations, Data Viz
+
+**What it does:** SVG shapes with animation (circles, bursts, stars, blobs), path drawing effects, particle bursts, lower thirds, countdowns, confetti, progress bars — the building blocks of professional motion design. No After Effects needed.
+
+**How it works:** This integration bridges four massive animation libraries into Remotion's frame-based rendering:
+
+- **Motion** (30.2K+ stars, formerly Framer Motion) — React-native animations with spring physics, SVG path morphing, and layout animations. Drop Motion components directly into Remotion compositions.
+- **Anime.js** (46.5K+ stars) — Lightweight engine for SVG, DOM, and JavaScript object animations. Handles complex choreography with timeline sequencing.
+- **Mo.js** (18.6K+ stars) — Purpose-built for motion graphics. Pre-made shape primitives (burst, swirl, stagger) that would take hours to code from scratch.
+- **GSAP** (23.2K+ stars) — Industry standard. SVG morphing (MorphSVGPlugin), draw-SVG line animations, motion paths, and stagger effects used in every major studio.
+
+**How it connects to Vanta:** The `motion-graphics.ts` integration provides `animateShape()` for individual elements, `createBurst()` for particle effects, `animatePath()` for SVG line drawing, and pre-built templates for common motion graphics (lower thirds, countdowns, confetti, progress bars).
+
+```typescript
+import { animateShape, createBurst, TEMPLATES } from "./integrations/motion-graphics";
+
+// Animate a shape
+const circle = animateShape("circle", {
+  from: { scale: 0, opacity: 0, x: 0, y: 0 },
+  to: { scale: 1, opacity: 1, x: 200, y: 100 },
+  duration: 30, easing: "spring",
+});
+
+// Create a confetti burst
+const confetti = TEMPLATES.confetti(["#FFD700", "#FF4444", "#44FF44"]);
+
+// Lower third title
+const title = TEMPLATES.lowerThird("John Smith — CEO", "#FFD700");
+```
+
+**What it replaces:** Remotion Pro Colors and Shapes ($20), Remotion Pro Watercolor Map ($50), After Effects shape layers, Motion Array templates ($30/mo)
+
+**Repos:**
+- [motion](https://github.com/motiondivision/motion) — 30,200+ stars (Framer Motion)
+- [anime.js](https://github.com/juliangarnier/anime) — 46,500+ stars
+- [mo.js](https://github.com/mojs/mojs) — 18,600+ stars
+- [GSAP](https://github.com/greensock/GSAP) — 23,200+ stars
 
 ---
 
@@ -350,9 +494,14 @@ vanta/
 │       ├── voice-clone.ts          # GPT-SoVITS / OpenVoice
 │       ├── ai-avatar.ts           # SadTalker / Wav2Lip / V-Express
 │       ├── auto-captions.ts       # Whisper transcription
+│       ├── animated-captions.ts   # TikTok/karaoke styled captions (replaces $100)
 │       ├── ai-video.ts            # Open-Sora / AnimateDiff
 │       ├── ai-music.ts            # ACE-Step / AudioGPT
-│       └── background-removal.ts  # Client-side bg removal
+│       ├── background-removal.ts  # Client-side bg removal
+│       ├── video-editor.ts        # Drag-and-drop editor (replaces $600)
+│       ├── timeline.ts            # Multi-track timeline (replaces $300)
+│       ├── transitions.ts         # 100+ WebGL transitions (replaces $10)
+│       └── motion-graphics.ts     # Shapes, bursts, paths (replaces $70)
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -361,6 +510,8 @@ vanta/
 ---
 
 ## What Vanta Replaces
+
+### SaaS Subscriptions
 
 | Tool | Monthly Cost | Vanta Equivalent |
 |---|---|---|
@@ -373,6 +524,20 @@ vanta/
 | Remove.bg | $0.20/image | imgly background removal |
 | Epidemic Sound | $15/mo | ACE-Step + AudioGPT |
 | **Total saved** | **$134+/mo** | **$0** |
+
+### Remotion Pro Store (one-time purchases)
+
+| Store Item | Price | Vanta Equivalent |
+|---|---|---|
+| Editor Starter | $600 | `video-editor.ts` — DesignCombo react-video-editor (1.4K stars) |
+| Animated Captions | $100 | `animated-captions.ts` — remotion-subtitles + style presets |
+| Timeline | $300 | `timeline.ts` — react-timeline-editor (661 stars) |
+| Cube Transition | $10 | `transitions.ts` — GL Transitions (100+ effects, 1.2K stars) |
+| Colors and Shapes | $20 | `motion-graphics.ts` — Motion + Anime.js + Mo.js (95K+ combined stars) |
+| Watercolor Map | $50 | `motion-graphics.ts` — SVG path animations + GSAP morphing |
+| **Total saved** | **$1,080** | **$0** |
+
+**Combined savings: $134+/month in subscriptions + $1,080 in one-time purchases.**
 
 ---
 
