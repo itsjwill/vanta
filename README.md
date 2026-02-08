@@ -1,8 +1,8 @@
-# VANTA
+# VANTA — Open Source AI Video Engine
 
-### Open Source Video Engine
+### Free alternative to Synthesia, Runway ML, Descript, HeyGen, and ElevenLabs
 
-> 40+ open source repositories. One render pipeline. $0.
+> Voice cloning + AI avatars + auto-captions + AI video generation + AI music + background removal + visual editor. 40+ open source repos, one render pipeline. $0.
 
 [![Join The Agentic Advantage](https://img.shields.io/badge/THE_AGENTIC_ADVANTAGE-000000?style=for-the-badge&logoColor=white)](https://www.skool.com/ai-elite-9507/about?ref=67521860944147018da6145e3db6e51c)
 [![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
@@ -10,9 +10,9 @@
 
 ---
 
-Vanta is a programmatic video engine built on [Remotion](https://github.com/remotion-dev/remotion) that integrates voice cloning, AI avatars, auto-captions, generative video, AI music, particle effects, background removal, and a visual editor into a single pipeline.
+Vanta is a programmatic video engine built on [Remotion](https://github.com/remotion-dev/remotion) that combines 40+ open source repositories into a single video creation pipeline. Voice cloning (GPT-SoVITS), AI talking-head avatars (SadTalker), word-level auto-captions (Whisper), text-to-video generation (Open-Sora), AI music (ACE-Step), client-side background removal, and a drag-and-drop visual editor — all running locally.
 
-Every integration runs locally. No API keys, no subscriptions, no per-video charges. You own the entire stack.
+No API keys. No subscriptions. No per-video charges. You own the entire stack.
 
 ---
 
