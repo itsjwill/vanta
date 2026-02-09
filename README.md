@@ -12,7 +12,7 @@
 
 Vanta is a programmatic video engine built on [Remotion](https://github.com/remotion-dev/remotion) that combines 40+ open source repositories into a single creation pipeline. Voice cloning (GPT-SoVITS), talking-head avatars (SadTalker), animated captions (Whisper), video generation (Open-Sora), music generation (ACE-Step), background removal, image editing (Sharp), vector graphics (SVG.js), drag-and-drop editor, video timeline, 100+ GPU-accelerated transitions, and motion graphics — all running locally.
 
-It replaces everything in the [Remotion Pro Store](https://www.remotion.pro/store) — Editor ($600), Animated Captions ($100), Timeline ($300), Cube Transition ($10), Colors & Shapes ($20), Watercolor Map ($50) — and most of the Adobe Creative Cloud suite. **$1,080+ in paid features and $55+/mo in subscriptions, free.**
+It replaces everything in the [Remotion Pro Store](https://www.remotion.pro/store) — Editor ($600), Animated Captions ($100), Timeline ($300), Cube Transition ($10), Colors & Shapes ($20), Watercolor Map ($50) — and most of the Adobe Creative Cloud suite. **$1,080+ in paid features and $190+/mo in subscriptions, free.**
 
 No API keys. No subscriptions. No per-video charges. You own the entire stack.
 
