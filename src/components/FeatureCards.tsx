@@ -3,13 +3,15 @@ import React from "react";
 
 const CAPABILITIES = [
   { name: "Voice Cloning", detail: "GPT-SoVITS  /  54K stars" },
-  { name: "AI Avatars", detail: "SadTalker  /  7K stars" },
+  { name: "Talking Avatars", detail: "SadTalker  /  7K stars" },
   { name: "Auto Captions", detail: "Whisper  /  word-level" },
   { name: "Video Generation", detail: "Open-Sora  /  text to video" },
-  { name: "AI Music", detail: "ACE-Step  /  free Suno alt" },
-  { name: "Background Removal", detail: "imgly  /  client-side" },
+  { name: "Music Generation", detail: "ACE-Step  /  free Suno alt" },
+  { name: "Image Editing", detail: "Sharp  /  31K stars" },
+  { name: "Vector Graphics", detail: "SVG.js + Paper.js" },
   { name: "Visual Editor", detail: "react-video-editor  /  CapCut clone" },
-  { name: "Particle Effects", detail: "tsparticles  /  8K stars" },
+  { name: "Transitions", detail: "GL Transitions  /  100+ effects" },
+  { name: "Motion Graphics", detail: "Anime.js  /  46K stars" },
 ];
 
 export const FeatureCards: React.FC = () => {
@@ -42,7 +44,7 @@ export const FeatureCards: React.FC = () => {
           <div style={{ fontSize: 14, fontFamily: '"Courier New", Courier, monospace', color: "rgba(255,255,255,0.3)", letterSpacing: "0.12em", marginTop: 8 }}>open source repos</div>
 
           <div style={{ fontSize: 64, fontWeight: 100, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', color: "rgba(255,180,100,0.8)", lineHeight: 1.1, marginTop: 36 }}>$0</div>
-          <div style={{ fontSize: 14, fontFamily: '"Courier New", Courier, monospace', color: "rgba(255,255,255,0.3)", letterSpacing: "0.12em", marginTop: 8 }}>replaces $100+/mo in saas tools</div>
+          <div style={{ fontSize: 14, fontFamily: '"Courier New", Courier, monospace', color: "rgba(255,255,255,0.3)", letterSpacing: "0.12em", marginTop: 8 }}>replaces $190+/mo in saas tools</div>
 
           <div style={{ marginTop: 48, opacity: interpolate(frame, [55, 70], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }}>
             <div style={{ fontSize: 14, fontFamily: '"Courier New", Courier, monospace', color: "rgba(255,180,100,0.5)", letterSpacing: "0.08em" }}>github.com/itsjwill/vanta</div>

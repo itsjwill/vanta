@@ -1,8 +1,8 @@
 # VANTA — Open Source AI Video Engine
 
-### Free alternative to Synthesia, Runway ML, Descript, HeyGen, ElevenLabs, and the Remotion Pro Store
+### Free alternative to Adobe Creative Cloud, Synthesia, Runway ML, Descript, HeyGen, ElevenLabs, and the Remotion Pro Store
 
-> Voice cloning + AI avatars + animated captions + AI video + AI music + background removal + visual editor + timeline + transitions + motion graphics. 40+ open source repos, one render pipeline. $0.
+> Voice cloning + talking-head avatars + animated captions + video generation + music generation + background removal + image editing + vector graphics + visual editor + timeline + transitions + motion graphics. 40+ open source repos, one render pipeline. $0.
 
 [![Join The Agentic Advantage](https://img.shields.io/badge/THE_AGENTIC_ADVANTAGE-000000?style=for-the-badge&logoColor=white)](https://www.skool.com/ai-elite-9507/about?ref=67521860944147018da6145e3db6e51c)
 [![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
@@ -10,9 +10,9 @@
 
 ---
 
-Vanta is a programmatic video engine built on [Remotion](https://github.com/remotion-dev/remotion) that combines 40+ open source repositories into a single video creation pipeline. Voice cloning (GPT-SoVITS), AI talking-head avatars (SadTalker), animated captions (Whisper + styled renderers), text-to-video generation (Open-Sora), AI music (ACE-Step), client-side background removal, drag-and-drop visual editor, video timeline, 100+ GPU-accelerated transitions, and motion graphics — all running locally.
+Vanta is a programmatic video engine built on [Remotion](https://github.com/remotion-dev/remotion) that combines 40+ open source repositories into a single creation pipeline. Voice cloning (GPT-SoVITS), talking-head avatars (SadTalker), animated captions (Whisper), video generation (Open-Sora), music generation (ACE-Step), background removal, image editing (Sharp), vector graphics (SVG.js), drag-and-drop editor, video timeline, 100+ GPU-accelerated transitions, and motion graphics — all running locally.
 
-It also replaces everything in the [Remotion Pro Store](https://www.remotion.pro/store) — Editor ($600), Animated Captions ($100), Timeline ($300), Cube Transition ($10), Colors & Shapes ($20), Watercolor Map ($50) — **$1,080 in paid features, free.**
+It replaces everything in the [Remotion Pro Store](https://www.remotion.pro/store) — Editor ($600), Animated Captions ($100), Timeline ($300), Cube Transition ($10), Colors & Shapes ($20), Watercolor Map ($50) — and most of the Adobe Creative Cloud suite. **$1,080+ in paid features and $55+/mo in subscriptions, free.**
 
 No API keys. No subscriptions. No per-video charges. You own the entire stack.
 
@@ -216,7 +216,7 @@ const result = await removeBackground("./presenter-photo.jpg");
 
 **How it works:** DesignCombo's react-video-editor (1.4K+ stars) is built ON TOP of Remotion's rendering engine. Every edit in the visual UI maps to Remotion compositions under the hood. The editor serializes your timeline into JSON that Remotion renders to MP4. This means anything created visually can also be generated programmatically, batch-processed from a CSV, or extended with custom React components.
 
-Twick takes an alternative approach — it's an AI-powered video editor SDK that uses Canvas API rendering with built-in AI captions and serverless MP4 export. If you don't need the full Remotion ecosystem, Twick gives you a standalone editor with less configuration.
+Twick takes a different approach — a video editor SDK that uses Canvas API rendering with built-in auto-captions and serverless MP4 export. Standalone, less configuration, no Remotion dependency.
 
 **How it connects to Vanta:** The `video-editor.ts` integration provides a project format that bridges the editor UI and Remotion's renderer. Create a project in the editor, export it, and render it — or build projects programmatically with `createEditor()` and feed them into the same pipeline.
 
@@ -365,6 +365,77 @@ const title = TEMPLATES.lowerThird("John Smith — CEO", "#FFD700");
 
 ---
 
+### Image Editor — Sharp & JIMP
+
+**What it does:** Programmatic image editing — resize, crop, color correct, apply filters, composite layers, batch process thousands of photos. The Photoshop and Lightroom replacement.
+
+**How it works:** Sharp (31.8K+ stars) is the fastest image processing library in Node.js. It's backed by libvips (C++), which means operations that take Photoshop seconds take Sharp milliseconds. Resize a 4K photo in 20ms. Batch color-correct 500 images in under a minute. Apply LUT color grades, adjust exposure/contrast/saturation, sharpen, blur — everything Lightroom does, but scriptable.
+
+JIMP (14.6K+ stars) is the pure JavaScript alternative. Zero native dependencies means it runs everywhere — browser, Node, serverless functions. It handles compositing, filters, text overlay, and format conversion without compiling anything.
+
+Fabric.js bridges both into a visual canvas editor with layers, blend modes, and real-time preview — the Photoshop layer panel, in the browser.
+
+**How it connects to Vanta:** The `image-editor.ts` integration provides `processImage()` for single edits, `batchProcess()` for folder-level operations, `createComposition()` for layered compositing, and 17 filter presets (cinematic, noir, chrome, warm-vintage, etc.) that apply directly to images before they enter the Remotion render pipeline.
+
+```typescript
+import { processImage, FILTER_RECIPES } from "./integrations/image-editor";
+
+// Color grade a photo
+await processImage("./photo.jpg", {
+  resize: { width: 1920 },
+  colorCorrect: FILTER_RECIPES.cinematic,
+  sharpen: true,
+  output: "./photo-graded.jpg",
+});
+
+// Use in Remotion: <Img src="./photo-graded.jpg" />
+```
+
+**What it replaces:** Adobe Photoshop ($22.99/mo), Adobe Lightroom ($9.99/mo), Canva Pro image editing ($13/mo)
+
+**Repos:**
+- [sharp](https://github.com/lovell/sharp) — 31,800+ stars, fastest Node.js image processor
+- [jimp](https://github.com/jimp-dev/jimp) — 14,600+ stars, pure JavaScript
+- [fabric.js](https://github.com/fabricjs/fabric.js) — Canvas compositing with layers
+- [vue-fabric-editor](https://github.com/ikuaitu/vue-fabric-editor) — 7,700+ stars, full editor UI
+
+---
+
+### Vector Graphics — SVG.js & Paper.js
+
+**What it does:** Create, edit, and animate vector graphics — logos, icons, illustrations, infographics, data visualizations. Export as SVG for infinite scaling or convert to PNG/WebP at any resolution.
+
+**How it works:** SVG.js provides a clean API for building SVG documents programmatically. Instead of hand-writing XML, you call `addCircle()`, `addPath()`, `addText()` and get a valid SVG document. Paper.js adds boolean operations (union, subtract, intersect) — the core of vector illustration work that lets you combine shapes into complex forms.
+
+SVG-Edit gives you a full browser-based editor when you need visual control. Fabric.js bridges vector and raster, letting you mix SVG elements with bitmap images on the same canvas.
+
+**How it connects to Vanta:** The `vector-graphics.ts` integration provides document creation, shape helpers (circle, rect, path, text), gradient definitions, boolean path operations, and SVG export. The output plugs directly into Remotion as inline SVG inside `<AbsoluteFill>` components, or converts to PNG via Sharp for raster rendering.
+
+```typescript
+import { createSVG, addCircle, addText, addLinearGradient, exportSVG } from "./integrations/vector-graphics";
+
+let doc = createSVG(1920, 1080);
+doc = addLinearGradient(doc, "bg", [
+  { offset: "0%", color: "#0a0a0a" },
+  { offset: "100%", color: "#1a1a2e" },
+], 135);
+doc = addCircle(doc, { cx: 960, cy: 540, r: 200, fill: "url(#bg)", stroke: "#FFD700", strokeWidth: 2 });
+doc = addText(doc, { content: "VANTA", x: 960, y: 560, fontSize: 120, fontWeight: 100, fill: "#FFFFFF" });
+
+const svg = exportSVG(doc);
+// Use in Remotion: <div dangerouslySetInnerHTML={{ __html: svg }} />
+```
+
+**What it replaces:** Adobe Illustrator ($22.99/mo), Figma Pro ($15/mo for full features), Canva vector tools
+
+**Repos:**
+- [svg.js](https://github.com/svgdotjs/svg.js) — Lightweight SVG manipulation
+- [SVG-Edit](https://github.com/SVG-Edit/svgedit) — Full browser-based SVG editor
+- [paper.js](https://github.com/paperjs/paper.js) — Vector graphics scripting with boolean ops
+- [fabric.js](https://github.com/fabricjs/fabric.js) — Canvas + SVG hybrid rendering
+
+---
+
 ### Particle Effects — tsparticles
 
 **What it does:** Adds particle systems to video scenes — confetti, fireworks, snow, floating orbs, constellation networks, smoke, custom shapes. GPU-accelerated, runs at 60fps.
@@ -394,7 +465,7 @@ const title = TEMPLATES.lowerThird("John Smith — CEO", "#FFD700");
 | **FFmpeg in Browser** | [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) | 17,100+ | Client-side video processing, transcoding, format conversion |
 | **Face Swap** | [roop](https://github.com/s0md3v/roop) | 19,000+ | One-click face replacement in video |
 | **Data Visualization** | [D3.js](https://d3js.org/) | 108,000+ | Animated charts, graphs, infographics from live data |
-| **Smart Cuts** | [auto-editor](https://github.com/WyattBlue/auto-editor) | Active | Auto-remove silence, dead frames, bad takes |
+| **Silence Removal** | [auto-editor](https://github.com/WyattBlue/auto-editor) | Active | Cut silence, dead frames, bad takes automatically |
 
 ---
 
@@ -501,7 +572,9 @@ vanta/
 │       ├── video-editor.ts        # Drag-and-drop editor (replaces $600)
 │       ├── timeline.ts            # Multi-track timeline (replaces $300)
 │       ├── transitions.ts         # 100+ WebGL transitions (replaces $10)
-│       └── motion-graphics.ts     # Shapes, bursts, paths (replaces $70)
+│       ├── motion-graphics.ts     # Shapes, bursts, paths (replaces $70)
+│       ├── image-editor.ts        # Photo editing + color grading (replaces Photoshop/Lightroom)
+│       └── vector-graphics.ts     # SVG creation + editing (replaces Illustrator)
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -515,7 +588,10 @@ vanta/
 
 | Tool | Monthly Cost | Vanta Equivalent |
 |---|---|---|
-| Synthesia | $22/mo + $30/video | Voice clone + AI avatar |
+| Adobe Photoshop | $22.99/mo | `image-editor.ts` — Sharp + JIMP + Fabric.js |
+| Adobe Illustrator | $22.99/mo | `vector-graphics.ts` — SVG.js + Paper.js |
+| Adobe Lightroom | $9.99/mo | `image-editor.ts` — Sharp color correction + filter presets |
+| Synthesia | $22/mo + $30/video | Voice clone + talking-head avatar |
 | Runway ML | $12/mo | Open-Sora video generation |
 | Descript | $24/mo | Whisper captions + auto-editor |
 | HeyGen | $48/mo | SadTalker + Wav2Lip |
@@ -523,7 +599,7 @@ vanta/
 | Suno | $8/mo | ACE-Step music generation |
 | Remove.bg | $0.20/image | imgly background removal |
 | Epidemic Sound | $15/mo | ACE-Step + AudioGPT |
-| **Total saved** | **$134+/mo** | **$0** |
+| **Total saved** | **$190+/mo** | **$0** |
 
 ### Remotion Pro Store (one-time purchases)
 
@@ -537,7 +613,7 @@ vanta/
 | Watercolor Map | $50 | `motion-graphics.ts` — SVG path animations + GSAP morphing |
 | **Total saved** | **$1,080** | **$0** |
 
-**Combined savings: $134+/month in subscriptions + $1,080 in one-time purchases.**
+**Combined savings: $190+/month in subscriptions + $1,080 in one-time purchases = $3,360+ in the first year.**
 
 ---
 

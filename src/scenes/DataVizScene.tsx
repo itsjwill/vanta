@@ -3,11 +3,11 @@ import React from "react";
 
 const DATA = [
   { label: "voice cloning", value: 92 },
-  { label: "ai avatars", value: 87 },
+  { label: "talking avatars", value: 87 },
   { label: "auto captions", value: 95 },
+  { label: "image editing", value: 91 },
   { label: "video generation", value: 78 },
-  { label: "background removal", value: 91 },
-  { label: "ai soundtrack", value: 83 },
+  { label: "transitions", value: 88 },
 ];
 
 export const DataVizScene: React.FC = () => {
