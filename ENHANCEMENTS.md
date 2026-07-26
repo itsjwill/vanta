@@ -1,5 +1,7 @@
 # VANTA Enhancement Roadmap
 
+> **Pipeline status: verified ✅** — `npm install`, `tsc --noEmit`, and full `npm run render` (450/450 frames → `out/vanta-showcase.mp4`) all pass clean as of 2026-07-25.
+>
 > Deep-dive audit of the current integration stack + verified GitHub research for what to add next.
 > Every repo below was verified live via the GitHub API on **2026-07-25** — stars, last push date, and license checked. Nothing here is from memory.
 >

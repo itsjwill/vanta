@@ -1,20 +1,24 @@
 # VANTA — Open Source AI Video Engine
 
-### Free alternative to Adobe Creative Cloud, Synthesia, Runway ML, Descript, HeyGen, ElevenLabs, and the Remotion Pro Store
+### Free alternative to Adobe Creative Cloud, Synthesia, Runway ML, Descript, HeyGen, ElevenLabs, CapCut Pro, Topaz Video AI, and the Remotion Pro Store
 
-> Voice cloning + talking-head avatars + animated captions + video generation + music generation + background removal + image editing + vector graphics + visual editor + timeline + transitions + motion graphics. 40+ open source repos, one render pipeline. $0.
+> Voice cloning + talking-head avatars + animated captions + AI video generation + AI music generation + background removal + image editing + vector graphics + visual editor + timeline + transitions + motion graphics. 40+ open source repos, one render pipeline. $0.
 
 [![Join The Agentic Advantage](https://img.shields.io/badge/THE_AGENTIC_ADVANTAGE-000000?style=for-the-badge&logoColor=white)](https://www.skool.com/ai-elite-9507/about?ref=67521860944147018da6145e3db6e51c)
 [![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Built with Remotion](https://img.shields.io/badge/Remotion-6366f1?style=for-the-badge)](https://remotion.dev)
+[![GitHub Stars](https://img.shields.io/github/stars/itsjwill/vanta?style=for-the-badge&color=FFD700)](https://github.com/itsjwill/vanta/stargazers)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)](https://github.com/itsjwill/vanta/pulls)
 
 ---
 
-Vanta is a programmatic video engine built on [Remotion](https://github.com/remotion-dev/remotion) that combines 40+ open source repositories into a single creation pipeline. Voice cloning (GPT-SoVITS), talking-head avatars (SadTalker), animated captions (Whisper), video generation (Open-Sora), music generation (ACE-Step), background removal, image editing (Sharp), vector graphics (SVG.js), drag-and-drop editor, video timeline, 100+ GPU-accelerated transitions, and motion graphics — all running locally.
+Vanta is a programmatic AI video engine built on [Remotion](https://github.com/remotion-dev/remotion) that combines 40+ open source repositories into a single creation pipeline. Voice cloning (GPT-SoVITS), talking-head avatars (MuseTalk / LatentSync), word-accurate animated captions (WhisperX), text-to-video generation (Wan 2.2 / LTX-Video), music generation (ACE-Step), background removal, image editing (Sharp), vector graphics (SVG.js), drag-and-drop editor, video timeline, 100+ GPU-accelerated transitions, and motion graphics — all running locally.
 
 It replaces everything in the [Remotion Pro Store](https://www.remotion.pro/store) — Editor ($600), Animated Captions ($100), Timeline ($300), Cube Transition ($10), Colors & Shapes ($20), Watercolor Map ($50) — and most of the Adobe Creative Cloud suite. **$1,080+ in paid features and $190+/mo in subscriptions, free.**
 
 No API keys. No subscriptions. No per-video charges. You own the entire stack.
+
+**Every integration is audited for commercial-safe licensing** (Apache-2.0 / MIT / BSD) — so what you build on Vanta, you can actually sell. See [ENHANCEMENTS.md](ENHANCEMENTS.md) for the full verified audit + what's coming next.
 
 ---
 
@@ -60,22 +64,28 @@ const audioUrl = await voice.speak("Welcome to the future of video.");
 **What it replaces:** ElevenLabs ($5/mo for 30 min), PlayHT ($31.20/mo), Murf ($26/mo)
 
 **Repos:**
-- [GPT-SoVITS](https://github.com/RVC-Boss/GPT-SoVITS) — 54,800+ stars
-- [OpenVoice](https://github.com/myshell-ai/OpenVoice) — 35,900+ stars
+- [GPT-SoVITS](https://github.com/RVC-Boss/GPT-SoVITS) — 60,100+ stars, MIT, ships `api_v2.py` HTTP server
+- [VoxCPM](https://github.com/OpenBMB/VoxCPM) — 34,200+ stars, Apache-2.0, OpenAI-compatible REST API, 30 languages
+- [Chatterbox](https://github.com/resemble-ai/chatterbox) — 25,700+ stars, MIT, emotion exaggeration control
+- [F5-TTS](https://github.com/SWivid/F5-TTS) — 15,000+ stars, MIT, clones from a 10-second reference
+- [kokoro-js](https://github.com/hexgrad/kokoro) — Apache-2.0, pure-TypeScript ONNX TTS (zero Python, runs in-process)
+- [OpenVoice](https://github.com/myshell-ai/OpenVoice) — 37,000+ stars, MIT
 
 ---
 
-### AI Avatars — SadTalker, Wav2Lip, V-Express
+### AI Avatars — MuseTalk, LatentSync, InfiniteTalk
 
-**What it does:** One headshot photo becomes a talking presenter. Upload a photo, feed it audio, and get a video of that person speaking with natural head movements and perfect lip sync.
+**What it does:** One headshot photo becomes a talking presenter. Upload a photo, feed it audio, and get a video of that person speaking with natural head movements and perfect lip sync. Or take any existing video and re-dub it with new audio — the lips will match.
 
-**How it works:** SadTalker (7K+ stars) generates 3D motion coefficients from audio, then applies them to a still image using a face renderer. It predicts head pose (yaw, pitch, roll) and expression coefficients (blink, eyebrow, jaw) from the audio waveform, so the talking head looks natural — not like a static image with moving lips.
+**How it works:** MuseTalk (6.2K+ stars, MIT, from Tencent Music) does real-time lip-sync at 30fps+ — feed it a face video and new audio, and it regenerates the mouth region frame-by-frame in latent space so the lips match the new track. It's the modern replacement for the abandoned Wav2Lip line.
 
-Wav2Lip focuses specifically on lip sync accuracy. It uses a pre-trained discriminator that can tell if audio and lip movements match, then trains a generator to produce frames where the lips perfectly match the audio. This means you can take any existing video and re-dub it with new audio and the lips will match.
+LatentSync (5.9K+ stars, Apache-2.0, from ByteDance) is the quality pick: an audio-conditioned latent diffusion model that generates temporally consistent lip sync directly on existing footage — no intermediate 3D representation, no flicker.
 
-V-Express (2.3K+ stars) adds expression control on top of this. You can specify emotions (happy, serious, excited) and the avatar will express them while speaking. Useful for creating presenters with personality, not just talking heads.
+InfiniteTalk (7.5K+ stars, Apache-2.0) generates **unlimited-length** talking video from a single image plus audio — full head movement, expressions, and identity consistency across minutes of footage, not seconds. EchoMimicV3 (Apache-2.0) extends this to full-body and half-body animation on just 12GB VRAM.
 
-**How it connects to Vanta:** The `ai-avatar.ts` integration sends your headshot and audio to a local SadTalker or Wav2Lip server. It returns a video URL that you use with Remotion's `<OffthreadVideo>` component. The avatar video composites directly into your scene layout.
+**License note:** Vanta previously referenced SadTalker (abandoned 2024), Wav2Lip (non-commercial — README prohibits commercial use), and V-Express (research-only checkpoints). All replaced with the commercial-safe stack above. See [ENHANCEMENTS.md](ENHANCEMENTS.md) for the full audit.
+
+**How it connects to Vanta:** The `ai-avatar.ts` integration sends your headshot and audio to a local MuseTalk or LatentSync server. It returns a video URL that you use with Remotion's `<OffthreadVideo>` component. The avatar video composites directly into your scene layout.
 
 ```typescript
 import { createAvatar } from "./integrations/ai-avatar";
@@ -91,18 +101,19 @@ const videoUrl = await avatar.speak("./voiceover.wav");
 **What it replaces:** Synthesia ($22/mo, $30/video for custom avatars), HeyGen ($48/mo), D-ID ($5.90/min)
 
 **Repos:**
-- [SadTalker](https://github.com/OpenTalker/SadTalker) — 7,200+ stars
-- [Wav2Lip](https://github.com/Rudrabha/Wav2Lip) — Top-cited lip sync paper
-- [VideoReTalking](https://github.com/OpenTalker/video-retalking) — 7,200+ stars
-- [V-Express](https://github.com/tencent-ailab/V-Express) — 2,300+ stars
+- [MuseTalk](https://github.com/TMElyralab/MuseTalk) — 6,200+ stars, MIT, real-time 30fps lip sync
+- [LatentSync](https://github.com/bytedance/LatentSync) — 5,900+ stars, Apache-2.0, SOTA diffusion lip sync
+- [InfiniteTalk](https://github.com/MeiGen-AI/InfiniteTalk) — 7,500+ stars, Apache-2.0, unlimited-length talking video
+- [EchoMimicV3](https://github.com/antgroup/echomimic_v3) — Apache-2.0, full-body animation on 12GB VRAM
+- [ditto-talkinghead](https://github.com/antgroup/ditto-talkinghead) — Apache-2.0, real-time streaming (ONNX + TensorRT)
 
 ---
 
-### Auto-Captions — Whisper + Remotion
+### Auto-Captions — WhisperX + Remotion
 
 **What it does:** Drop in any audio file. Get word-level timestamps with timing accurate to the millisecond. Render them as animated captions in your video — TikTok-style word highlights, karaoke scrolls, whatever you want.
 
-**How it works:** OpenAI's Whisper model runs locally through transcribee (an open-source transcription platform). Whisper uses an encoder-decoder transformer trained on 680K hours of multilingual audio. The key feature for video work is word-level timestamps — not just "this sentence starts at 2.3s" but "the word 'future' starts at 2.31s and ends at 2.58s." This precision is what makes animated captions possible.
+**How it works:** WhisperX (23K+ stars, BSD-2) runs OpenAI's Whisper model locally, then adds the step raw Whisper skips: **wav2vec2 forced phoneme alignment**. Plain Whisper interpolates word timings and drifts; WhisperX aligns every word against the actual audio waveform — not just "this sentence starts at 2.3s" but "the word 'future' starts at 2.31s and ends at 2.58s." It also runs 70x realtime with batching and includes speaker diarization free. This precision is what makes animated captions possible.
 
 The transcription feeds into Remotion's rendering system where each word becomes a React component positioned in the timeline. You can style them however you want — scale, color, position, animation — because they're just React elements with frame-accurate timing.
 
@@ -119,21 +130,25 @@ const captions = await transcribe("./audio.wav", { model: "large" });
 **What it replaces:** Descript ($24/mo), Rev.ai ($0.02/min), manual SRT editing
 
 **Repos:**
-- [transcribee](https://github.com/bugbakery/transcribee) — Open-source transcription
-- [Whisper](https://github.com/openai/whisper) — OpenAI speech recognition
+- [WhisperX](https://github.com/m-bain/whisperX) — 23,000+ stars, BSD-2, forced-alignment word timestamps + diarization
+- [faster-whisper](https://github.com/SYSTRAN/faster-whisper) — 24,500+ stars, MIT, 4x faster CTranslate2 engine
+- [whisper.cpp](https://github.com/ggml-org/whisper.cpp) — 52,000+ stars, MIT, CPU/Metal inference with zero Python
+- [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) — 13,800+ stars, Apache-2.0, native Node.js bindings (no Python sidecar)
 - [@remotion/captions](https://www.remotion.dev/docs/captions) — Official Remotion captions
 
 ---
 
-### AI Video Generation — Open-Sora & AnimateDiff
+### AI Video Generation — Wan 2.2, LTX-Video & FramePack
 
-**What it does:** Type a text prompt. Get a video clip. "Aerial shot of a city at sunset, cinematic lighting" becomes actual footage you can use as B-roll in your production.
+**What it does:** Type a text prompt. Get a video clip. "Aerial shot of a city at sunset, cinematic lighting" becomes actual footage you can use as B-roll in your production. Or feed it a still image and get it animated.
 
-**How it works:** Open-Sora replicates the architecture behind OpenAI's Sora using a Diffusion Transformer (DiT). It operates in a compressed latent space — video frames are encoded into latents, noise is added, then a transformer iteratively denoises them conditioned on your text prompt. The spatial-temporal attention mechanism ensures consistency between frames so you get smooth motion, not flickering images.
+**How it works:** Wan 2.2 (16.8K+ stars, **Apache-2.0 code AND weights** — the only SOTA-tier video model that's fully permissive) uses a Mixture-of-Experts Diffusion Transformer for text-to-video and image-to-video. The TI2V-5B variant runs on a single RTX 4090. This is the quality tier that used to require Runway or Kling subscriptions.
 
-AnimateDiff takes a different approach. Instead of generating from scratch, it takes a still image and adds motion to it. It inserts motion modules into a Stable Diffusion pipeline, so you can animate logos, product shots, or any static image with controllable motion (pan, zoom, rotation, organic movement).
+LTX-Video (10.7K+ stars, from Lightricks) is the speed pick — **real-time-class generation**, faster than playback on datacenter GPUs, with a distilled 2B model for consumer cards. Speed matters inside an editor: generate B-roll while you're still editing, not overnight.
 
-**How it connects to Vanta:** The `ai-video.ts` integration talks to a local Open-Sora or AnimateDiff server. `generateVideo()` takes a text prompt and returns a clip URL. `animateImage()` takes a still image and motion description and returns an animated version. Both feed directly into Remotion's `<OffthreadVideo>`.
+FramePack (17K+ stars, Apache-2.0, from the ControlNet author) generates long image-to-video on just **6GB VRAM** using next-frame-section prediction — the consumer-hardware king.
+
+**How it connects to Vanta:** The `ai-video.ts` integration talks to a local generation server (ComfyUI runs all three models behind one HTTP API on `:8188`). `generateVideo()` takes a text prompt and returns a clip URL. `animateImage()` takes a still image and motion description and returns an animated version. Both feed directly into Remotion's `<OffthreadVideo>`.
 
 ```typescript
 import { generateVideo, animateImage } from "./integrations/ai-video";
@@ -152,9 +167,11 @@ const animated = await animateImage("./product.png", "slow zoom with particles",
 **What it replaces:** Runway ML ($12/mo), Pika Labs ($8/mo), stock footage libraries ($15-$300/clip)
 
 **Repos:**
-- [Open-Sora](https://github.com/hpcaitech/Open-Sora) — Open-source Sora
-- [AnimateDiff](https://github.com/guoyww/AnimateDiff) — Animate still images
-- [Allegro](https://github.com/rhymes-ai/Allegro) — 6-second video generation
+- [Wan 2.2](https://github.com/Wan-Video/Wan2.2) — 16,800+ stars, Apache-2.0 code + weights, SOTA open video model
+- [LTX-Video](https://github.com/Lightricks/LTX-Video) — 10,700+ stars, real-time-class generation
+- [FramePack](https://github.com/lllyasviel/FramePack) — 17,100+ stars, Apache-2.0, long video on 6GB VRAM
+- [ComfyUI](https://github.com/comfyanonymous/ComfyUI) — 122,000+ stars, one localhost API serving all of the above
+- [Open-Sora](https://github.com/hpcaitech/Open-Sora) — legacy fallback
 
 ---
 
@@ -162,11 +179,11 @@ const animated = await animateImage("./product.png", "slow zoom with particles",
 
 **What it does:** Describe the music you want. "Upbeat lo-fi hip hop with soft piano and vinyl crackle, 90 BPM." Get a fully produced track, royalty-free, unlimited generations.
 
-**How it works:** ACE-Step is a local Suno alternative. It uses a music generation model that understands genre, tempo, mood, and instrumentation from text descriptions. Unlike Suno or Udio which run in the cloud and charge per generation, ACE-Step runs on your GPU. A single RTX 3090 generates a 30-second track in under a minute.
+**How it works:** ACE-Step 1.5 (11.8K+ stars, MIT) is a local Suno alternative — the official repo, actively developed. It understands genre, tempo, mood, and instrumentation from text descriptions, trains custom LoRAs, and runs on CUDA, Apple Silicon (MLX), AMD, and Intel. Unlike Suno or Udio which run in the cloud and charge per generation, ACE-Step runs on your hardware — and it ships a **first-party REST API**: `uv run acestep-api` gives you `http://localhost:8001` out of the box.
 
-AudioGPT (10K+ stars) is the broader audio AI framework that handles not just music generation but sound effects, audio editing, speech enhancement, and audio understanding. It connects multiple audio AI models through a unified interface.
+MMAudio (2.2K+ stars, MIT including weights) fills the other half of the audio story: **video-to-audio foley**. Feed it a video clip and optional text, and it generates synchronized sound effects — footsteps, doors, ambience — matched to what's happening on screen. YuE (6.3K+ stars, Apache-2.0) adds full-song generation with vocals and lyrics.
 
-**How it connects to Vanta:** The `ai-music.ts` integration sends a text prompt to a local ACE-Step server and returns a track URL with BPM metadata. Drop it into Remotion's `<Audio>` component for a custom soundtrack on every video.
+**How it connects to Vanta:** The `ai-music.ts` integration sends a text prompt to the local ACE-Step server and returns a track URL with BPM metadata. Drop it into Remotion's `<Audio>` component for a custom soundtrack on every video.
 
 ```typescript
 import { generateMusic } from "./integrations/ai-music";
@@ -180,8 +197,9 @@ const track = await generateMusic("cinematic orchestral tension building", {
 **What it replaces:** Suno ($8/mo), Udio ($10/mo), Epidemic Sound ($15/mo), stock music ($15-$50/track)
 
 **Repos:**
-- [ace-step-ui](https://github.com/fspecii/ace-step-ui) — Local Suno alternative
-- [AudioGPT](https://github.com/AIGC-Audio/AudioGPT) — 10,200+ stars
+- [ACE-Step-1.5](https://github.com/ace-step/ACE-Step-1.5) — 11,800+ stars, MIT, official repo with built-in REST API
+- [MMAudio](https://github.com/hkchengrex/MMAudio) — 2,200+ stars, MIT, video-to-audio foley generation
+- [YuE](https://github.com/multimodal-art-projection/YuE) — 6,300+ stars, Apache-2.0, full songs with vocals + lyrics
 
 ---
 
@@ -232,8 +250,10 @@ const props = projectToRemotionProps(editor);
 **What it replaces:** Remotion Pro Editor Starter ($600), CapCut Pro ($7.99/mo), Canva Pro video editor ($13/mo)
 
 **Repos:**
-- [react-video-editor](https://github.com/designcombo/react-video-editor) — 1,400+ stars, built on Remotion
-- [twick](https://github.com/ncounterspecialist/twick) — AI video editor SDK with Canvas timeline
+- [react-video-editor](https://github.com/openvideodev/react-video-editor) — 1,700+ stars, built on Remotion (⚠️ relicensed 2026: free for individuals/small teams, paid for larger companies — pattern reference, not vendored)
+- [OpenCut](https://github.com/OpenCut-app/OpenCut) — 78,700+ stars, MIT, the open-source CapCut alternative — richest timeline UX in open source
+- [omniclip](https://github.com/omni-media/omniclip) — 1,400+ stars, MIT, WebCodecs browser editor
+- [twick](https://github.com/ncounterspecialist/twick) — Canvas timeline SDK (⚠️ Sustainable Use License, not open source — inspiration only)
 
 ---
 
@@ -289,7 +309,7 @@ const sequences = toRemotionSequences(timeline);
 **What it replaces:** Remotion Pro Timeline ($300)
 
 **Repos:**
-- [react-timeline-editor](https://github.com/xzdarcy/react-timeline-editor) — 661 stars, drag-and-drop
+- [react-timeline-editor](https://github.com/xzdarcy/react-timeline-editor) — 770+ stars, MIT, drag-and-drop (revived — v1.0.0 shipped Jan 2026)
 - [timeline-editor-react](https://github.com/kevintech/timeline-editor-react) — Lightweight (~13KB)
 
 ---
@@ -462,10 +482,17 @@ const svg = exportSVG(doc);
 
 | Integration | Repo | Stars | Use Case |
 |---|---|---|---|
-| **FFmpeg in Browser** | [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) | 17,100+ | Client-side video processing, transcoding, format conversion |
-| **Face Swap** | [roop](https://github.com/s0md3v/roop) | 19,000+ | One-click face replacement in video |
+| **Media Processing (TS-native)** | [mediabunny](https://github.com/Vanilagy/mediabunny) | 6,700+ | Pure-TypeScript mux/demux/convert in browser + Node (WebCodecs) |
+| **Video Upscaling** | [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan) | 36,000+ | 4x upscale via portable GPU binary — the Topaz Video AI replacement |
+| **Frame Interpolation** | [Practical-RIFE](https://github.com/hzwer/Practical-RIFE) | 5,500+ | 60fps conversion + buttery slow-mo, MIT |
+| **Face Restoration** | [GFPGAN](https://github.com/TencentARC/GFPGAN) | 37,600+ | Fix AI-garbled faces, Apache-2.0 |
+| **Rotoscoping** | [SAM2](https://github.com/facebookresearch/sam2) | 19,500+ | Click an object, get masks across all frames — AE Roto Brush replacement |
+| **Object/Watermark Removal** | [IOPaint](https://github.com/Sanster/IOPaint) | 23,300+ | `iopaint start` = instant localhost REST API |
+| **Stem Splitting** | [audio-separator](https://github.com/nomadkaraoke/python-audio-separator) | 1,200+ | Vocals/drums/bass/other via all UVR + Demucs models, MIT |
+| **Audio Denoise** | [DeepFilterNet](https://github.com/Rikorose/DeepFilterNet) | 4,500+ | Studio-grade noise removal via standalone Rust binary |
 | **Data Visualization** | [D3.js](https://d3js.org/) | 108,000+ | Animated charts, graphs, infographics from live data |
-| **Silence Removal** | [auto-editor](https://github.com/WyattBlue/auto-editor) | Active | Cut silence, dead frames, bad takes automatically |
+| **Silence Removal** | [auto-editor](https://github.com/WyattBlue/auto-editor) | 4,600+ | Cut silence, dead frames, bad takes automatically — public domain |
+| **Scene Detection** | [PySceneDetect](https://github.com/Breakthrough/PySceneDetect) | 5,000+ | Auto-split source footage into clips |
 
 ---
 
@@ -478,12 +505,12 @@ This is how a full production runs through Vanta:
                         |
           +-------------+-------------+
           |                           |
-    GPT-SoVITS                   Open-Sora
+    GPT-SoVITS                   Wan 2.2
     Clone your voice             Generate B-roll
     from 60s sample              from text prompts
           |                           |
           v                           v
-     SadTalker                  AnimateDiff
+     MuseTalk                   LTX-Video
      Photo → talking            Animate logos,
      head video                 product shots
           |                           |
@@ -497,15 +524,15 @@ This is how a full production runs through Vanta:
                    Add particle effects
                    confetti, networks
                         |
-                   ace-step-ui
+                   ACE-Step 1.5
                    Generate custom
-                   soundtrack
+                   soundtrack + MMAudio foley
                         |
                    auto-editor
                    Cut silence,
                    dead frames
                         |
-                   transcribee
+                   WhisperX
                    Word-level captions
                    with animations
                         |
@@ -562,12 +589,12 @@ vanta/
 │   │   ├── DataVizScene.tsx        # Horizontal bar chart
 │   │   └── WaveformScene.tsx       # Audio-reactive bars
 │   └── integrations/
-│       ├── voice-clone.ts          # GPT-SoVITS / OpenVoice
-│       ├── ai-avatar.ts           # SadTalker / Wav2Lip / V-Express
-│       ├── auto-captions.ts       # Whisper transcription
+│       ├── voice-clone.ts          # GPT-SoVITS / VoxCPM / F5-TTS
+│       ├── ai-avatar.ts           # MuseTalk / LatentSync / InfiniteTalk
+│       ├── auto-captions.ts       # WhisperX word-aligned transcription
 │       ├── animated-captions.ts   # TikTok/karaoke styled captions (replaces $100)
-│       ├── ai-video.ts            # Open-Sora / AnimateDiff
-│       ├── ai-music.ts            # ACE-Step / AudioGPT
+│       ├── ai-video.ts            # Wan 2.2 / LTX-Video / FramePack
+│       ├── ai-music.ts            # ACE-Step 1.5 / MMAudio foley
 │       ├── background-removal.ts  # Client-side bg removal
 │       ├── video-editor.ts        # Drag-and-drop editor (replaces $600)
 │       ├── timeline.ts            # Multi-track timeline (replaces $300)
@@ -592,14 +619,16 @@ vanta/
 | Adobe Illustrator | $22.99/mo | `vector-graphics.ts` — SVG.js + Paper.js |
 | Adobe Lightroom | $9.99/mo | `image-editor.ts` — Sharp color correction + filter presets |
 | Synthesia | $22/mo + $30/video | Voice clone + talking-head avatar |
-| Runway ML | $12/mo | Open-Sora video generation |
-| Descript | $24/mo | Whisper captions + auto-editor |
-| HeyGen | $48/mo | SadTalker + Wav2Lip |
+| Runway ML | $12/mo | Wan 2.2 + LTX-Video generation |
+| Descript | $24/mo | WhisperX captions + auto-editor |
+| HeyGen | $48/mo | MuseTalk + LatentSync |
 | ElevenLabs | $5/mo | GPT-SoVITS voice clone |
-| Suno | $8/mo | ACE-Step music generation |
+| Suno | $8/mo | ACE-Step 1.5 music generation |
 | Remove.bg | $0.20/image | imgly background removal |
-| Epidemic Sound | $15/mo | ACE-Step + AudioGPT |
-| **Total saved** | **$190+/mo** | **$0** |
+| Epidemic Sound | $15/mo | ACE-Step 1.5 + MMAudio foley |
+| Topaz Video AI | $299 one-time | Real-ESRGAN upscale + RIFE interpolation |
+| Adobe Podcast | $9.99/mo | DeepFilterNet denoise + resemble-enhance |
+| **Total saved** | **$200+/mo + $299** | **$0** |
 
 ### Remotion Pro Store (one-time purchases)
 
@@ -619,6 +648,11 @@ vanta/
 
 ## Roadmap
 
+**Full verified enhancement plan: [ENHANCEMENTS.md](ENHANCEMENTS.md)** — every candidate repo audited for stars, activity, and commercial-safe licensing.
+
+- [ ] Enhance module: Real-ESRGAN upscale + RIFE interpolation + GFPGAN face restore (portable GPU binaries, no Python)
+- [ ] ComfyUI backend: one localhost API serving Wan 2.2, LTX-Video, FLUX, MMAudio
+- [ ] Audio suite: MMAudio foley + DeepFilterNet denoise + stem splitting
 - [ ] Docker Compose for one-command AI service setup
 - [ ] Web UI for non-coders (visual editor + Remotion backend)
 - [ ] Template marketplace (corporate, social media, e-commerce)
@@ -644,14 +678,32 @@ Reading open source repos is step one. Shipping products that make money is wher
 
 ---
 
+## FAQ
+
+**Is Vanta really free for commercial use?**
+Yes. Vanta itself is MIT. Every default integration is audited for commercial-safe licensing (Apache-2.0 / MIT / BSD — code AND model weights). The full audit lives in [ENHANCEMENTS.md](ENHANCEMENTS.md). Note: Remotion itself requires a company license for for-profit teams of 4+ — individuals and small teams are free.
+
+**What is Vanta an alternative to?**
+Synthesia, HeyGen, and D-ID (AI avatars) · Runway ML and Pika (AI video generation) · ElevenLabs, PlayHT, and Murf (voice cloning) · Descript and Captions (auto-captions) · Suno, Udio, and Epidemic Sound (music) · CapCut Pro and Canva (video editing) · Topaz Video AI (upscaling) · Adobe Photoshop, Illustrator, Lightroom, and Podcast (Creative Cloud) · the entire Remotion Pro Store.
+
+**Do I need a GPU?**
+For the Remotion render pipeline, captions, editing, transitions, and motion graphics — no. For local AI generation (video, voice, avatars), a consumer GPU helps: FramePack runs on 6GB VRAM, Wan 2.2's 5B model on a single RTX 4090, and Kokoro TTS runs in pure TypeScript with no GPU at all.
+
+**Can I build a SaaS on this?**
+That's the point. MIT license, commercial-safe model weights, local rendering. Charge for the videos, the platform, or both.
+
+---
+
 ## Contributing
 
 PRs welcome. Priority areas:
 
-1. Docker Compose setup for AI services
-2. More Remotion scene templates
-3. Integration tests for each module
-4. Setup documentation per AI service
+1. Enhance module (Real-ESRGAN + RIFE + GFPGAN binaries)
+2. ComfyUI backend client (one API for all generation models)
+3. Docker Compose setup for AI services
+4. More Remotion scene templates
+5. Integration tests for each module
+6. Setup documentation per AI service
 
 ---
 
