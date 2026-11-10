@@ -5,9 +5,12 @@
  * for instant voice cloning from 60 seconds of audio.
  *
  * Usage:
- *   const voice = await cloneVoice("./sample.wav");
+ *   const voice = await cloneVoice({ serverUrl: "http://localhost:9880", sampleAudioPath: "./sample.wav" });
  *   const audio = await voice.speak("Hello from Vanta");
  *   // Use audio URL in Remotion's <Audio> component
+ *
+ *   // Or pass a pre-loaded Blob (browser / Remotion):
+ *   const voice = await cloneVoice({ serverUrl, sampleAudio: blob });
  *
  * Setup:
  *   1. Run GPT-SoVITS server locally: docker run -p 9880:9880 gptsovits/server
@@ -24,7 +27,10 @@
 
 export interface VoiceCloneConfig {
   serverUrl: string;
-  sampleAudioPath: string;
+  /** Path to the sample audio file on disk (Node). Alternative to `sampleAudio`. */
+  sampleAudioPath?: string;
+  /** Pre-loaded sample audio (browser / Remotion). Alternative to `sampleAudioPath`. */
+  sampleAudio?: Blob;
   language?: string;
   speed?: number;
 }
@@ -35,11 +41,30 @@ export interface ClonedVoice {
   speakToFile: (text: string, outputPath: string) => Promise<void>;
 }
 
-export async function cloneVoice(config: VoiceCloneConfig): Promise<ClonedVoice> {
-  const { serverUrl, sampleAudioPath, language = "en", speed = 1.0 } = config;
+export async function cloneVoice(
+  config: VoiceCloneConfig,
+): Promise<ClonedVoice> {
+  const {
+    serverUrl,
+    sampleAudioPath,
+    sampleAudio,
+    language = "en",
+    speed = 1.0,
+  } = config;
+
+  if (!sampleAudioPath && !sampleAudio) {
+    throw new Error("cloneVoice: provide sampleAudioPath or sampleAudio");
+  }
 
   // Upload sample audio to voice server
+  const audio =
+    sampleAudio ?? (await loadSampleAudio(sampleAudioPath as string));
+  const fileName = sampleAudioPath
+    ? sampleAudioPath.split(/[\\/]/).pop() || "sample.wav"
+    : "sample.wav";
+
   const formData = new FormData();
+  formData.append("audio", audio, fileName);
   const response = await fetch(`${serverUrl}/clone`, {
     method: "POST",
     body: formData,
@@ -62,9 +87,25 @@ export async function cloneVoice(config: VoiceCloneConfig): Promise<ClonedVoice>
       const ttsResponse = await fetch(`${serverUrl}/tts/file`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ voice_id, text, language, speed, output: outputPath }),
+        body: JSON.stringify({
+          voice_id,
+          text,
+          language,
+          speed,
+          output: outputPath,
+        }),
       });
       await ttsResponse.json();
     },
   };
+}
+
+/**
+ * Read a sample file from disk (Node only). Dynamically imported so this
+ * module stays importable in a browser / Remotion bundle, where the caller
+ * passes a Blob instead of a path.
+ */
+async function loadSampleAudio(sampleAudioPath: string): Promise<Blob> {
+  const { readFile } = await import("node:fs/promises");
+  return new Blob([await readFile(sampleAudioPath)]);
 }

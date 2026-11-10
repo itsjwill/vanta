@@ -8,7 +8,8 @@
     "render": "npx remotion render src/index.ts VantaShowcase out/vanta-showcase.mp4",
     "render:gif": "npx remotion render src/index.ts VantaShowcase out/vanta-showcase.gif --image-format png",
     "preview": "npx remotion preview src/index.ts",
-    "upgrade": "npx remotion upgrade"
+    "upgrade": "npx remotion upgrade",
+    "test": "node test/voice-clone.test.mjs"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@remotion/bundler": "^4.0.0",
+    "@types/node": "25.2.2",
     "@types/react": "^18.3.0",
     "typescript": "^5.5.0",
     "prettier": "^3.0.0"
